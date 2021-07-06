@@ -1,0 +1,130 @@
+<html>
+
+<head>
+  <title>Learning how to vanilla php</title>
+
+  <meta charset="utf-8" />
+
+  <link href="../css/index.css" rel="stylesheet" />
+  <style>
+    .container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .container * {
+      display: flex;
+    }
+
+    .container>h1 {
+      padding-left: 32px;
+      flex: 2;
+    }
+
+    .container>h2 {
+      flex: 2;
+    }
+
+    th {
+      text-align: left;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li>
+          <a href="/vanilla-php/">Home</a>
+        </li>
+        <li>
+          <a href="/vanilla-php/pages/sandbox.html">Sandbox</a>
+        </li>
+        <li>
+          <a href="/vanilla-php/pages/members.html">Members</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h1>You are on the Members Page!</h1>
+    <div class="container">
+      <h1 id="username">No User Selected - Select from the Sandbox</h1>
+      <h2 id="bp">BP : 0</h2>
+    </div>
+    <h1
+      style="margin-top:12px; margin-bottom:12px; margin-left:auto; margin-right:auto;max-width:1280px; width:100%; text-align:center;">
+      Heroes</h2>
+      <table id="gc">
+        <thead>
+          <tr>
+            <th>
+              Class
+            </th>
+            <th>
+              Name
+            </th>
+            <th style="width:100%">
+              <!-- this causes other columns to fit content width -->
+              BP
+            </th>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <section>
+        <form method="POST" action="#">
+          <label for="username">Username: </label>
+          <input type="text" name="username" />
+          <button type="submit" onclick="addUser(event)">Submit</button>
+        </form>
+      </section>
+  </main>
+
+  <script src="../js/data.js"></script>
+  <!-- for displaying gc data -->
+  <script>
+    const searchParams = new URLSearchParams(document.location.search);
+    const name = searchParams.get("name");
+
+    const user = members.find(_ => _.name == name);
+
+    const gcBody = document.querySelector("#gc tbody");
+    const username = document.querySelector("#username");
+    const bp = document.querySelector("#bp");
+
+    const displayHeroes = (_heroes) => {
+      _heroes.forEach(hero => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>
+            <img style='height=100%;width=100%' src=${images.class[hero.type.toLowerCase()]} />
+          </td>
+          <td>
+            ${hero.name}
+          </td>
+          <td>
+            ${hero.bp.toLocaleString()}
+          </td>
+        `;
+        gcBody.appendChild(row);
+      });
+    };
+
+    const updateDisplay = (user) => {
+      username.innerText = user.name;
+      bp.innerText = `BP : ${user.totalBP.toLocaleString()}`;
+      displayHeroes(user.heroes);
+    };
+
+    if (user) { updateDisplay(user); }
+
+    const addUser = (e) => {
+      e.preventDefault();
+      console.log(e);
+    };
+  </script>
+</body>
+
+</html>

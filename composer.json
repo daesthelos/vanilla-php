@@ -1,0 +1,14 @@
+{
+    "name": "scott/vanilla-php",
+    "type": "webpage",
+    "require": {
+        "monolog/monolog": "^2.2",
+        "guzzlehttp/guzzle": "^7.3"
+    },
+    "authors": [
+        {
+            "name": "Scott Yamamoto",
+            "email": "scott.yamamoto@hotmail.com"
+        }
+    ]
+}

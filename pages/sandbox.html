@@ -1,0 +1,112 @@
+<html>
+
+<head>
+  <title>Learning how to vanilla php</title>
+
+  <meta charset="utf-8" />
+
+  <link href="../css/index.css" rel="stylesheet" />
+</head>
+
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li>
+          <a href="/vanilla-php/">Home</a>
+        </li>
+        <li>
+          <a href="/vanilla-php/pages/sandbox.html">Sandbox</a>
+        </li>
+        <li>
+          <a href="/vanilla-php/pages/members.html">Members</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h1>You are on the Sandbox Page!</h1>
+    <div id="out">
+    </div>
+    <div style="padding:8px;margin:16px 0px;">
+      <label for="isInactivesHidden">Hide inactive members</label>
+      <input name="isInactivesHidden" type="checkbox" onclick="toggleInactives(event)" />
+    </div>
+    <table id="gc">
+      <thead>
+        <tr>
+          <th>
+            #
+          </th>
+          <th>
+            Name
+          </th>
+          <th>
+            Role
+          </th>
+          <th>Total BP</th>
+          <th>Hero 1</th>
+          <th>Hero 2</th>
+          <th>Hero 3</th>
+          <th>Hero 4</th>
+        </tr>
+      </thead>
+      <tbody id="gc_body"></tbody>
+    </table>
+  </main>
+
+  <script src="../js/data.js"></script>
+  <script>
+    const out = document.querySelector("#out");
+    fetch('/vanilla-php/api/test.php').then(x => x.text()).then(y => console.log(y));
+
+    const createRow = (covidData) => {
+
+    }
+  </script>
+  <!-- for displaying gc data -->
+  <script>
+    const gcBody = document.querySelector("#gc tbody");
+
+    const displayMembers = (_members) => {
+      //Reset content
+      gcBody.innerHTML = '';
+
+      _members.forEach((member, i) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>
+            ${i + 1}
+          </td>
+          <td>
+            <a href='members.html?name=${member.name}'>${member.name}</a>
+          </td>
+          <td>
+            ${member.role[0] + member.role.slice(1).toLowerCase()}
+          </td>
+          <td style='width:100%;text-align:center'>
+            ${member.totalBP.toLocaleString()}
+          </td>
+          <td><img src=${images.class[member.heroes[0].type.toLowerCase()]} />${member.heroes[0].name}</td>
+          <td><img src=${images.class[member.heroes[1].type.toLowerCase()]} />${member.heroes[1].name}</td>
+          <td><img src=${images.class[member.heroes[2].type.toLowerCase()]} />${member.heroes[2].name}</td>
+          <td><img src=${images.class[member.heroes[3].type.toLowerCase()]} />${member.heroes[3].name}</td>
+        `;
+        gcBody.appendChild(row);
+      });
+    };
+
+    const toggleInactives = (e) => {
+      if (e.target.checked) {
+        console.log(members.filter(_ => _.isInactive).length);
+        displayMembers(members.filter(_ => !_.isInactive));
+      } else {
+        displayMembers(members);
+      }
+    };
+
+    displayMembers(members);
+  </script>
+</body>
+
+</html>
